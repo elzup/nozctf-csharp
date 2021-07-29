@@ -24,12 +24,19 @@ namespace nozctf_csharp
 			string pattern = await reader.ReadLineAsync();
 			string sentence = "X CAN YOU SEE ANYTHING Q";
 
+			if (pattern.Length > 10) {
+				Console.WriteLine("Error! too long");
+				return;
+			}
+
 			try {
 				foreach (Match match in Regex.Matches(sentence, pattern,
 					RegexOptions.None,
 					TimeSpan.FromSeconds(1))) {
-					await response.WriteAsync(match.Value);
+					await response.WriteAsync($"Find! {match.Value}");
+					return;
 				}
+				await response.WriteAsync("No Hit");
 			}
 			catch (RegexMatchTimeoutException) {
 				string secret = Environment.GetEnvironmentVariable("KEY_Q7") ?? "";

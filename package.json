@@ -1,0 +1,10 @@
+{
+  "name": "nozctf-csharp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:elzup/nozctf-csharp.git",
+  "license": "MIT",
+  "scripts": {
+    "deploay": "gcloud functions deploy tryq7 --source . --trigger-http"
+  }
+}
