@@ -9,6 +9,26 @@ namespace nozctf_csharp
 {
 	public class Function : IHttpFunction
 	{
+
+		static string QTEXT = "X CAN YOU SEE ANYTHING Q";
+		static string SECRET_PARTS = Environment.GetEnvironmentVariable("KEY_Q7") ?? "";
+		public static string search(string pattern)
+		{
+			if (pattern.Length > 10) return "Error! too long";
+
+			try {
+				Match m = Regex.Match(QTEXT, pattern, RegexOptions.None, TimeSpan.FromSeconds(1));
+				if (m.Success) {
+					return $"Find! {m.Value}";
+				} else {
+					return "No Hit";
+				}
+			}
+			catch (RegexMatchTimeoutException) {
+				return $"TIMEOUT! 'FLAG_{SECRET_PARTS}'";
+			}
+		}
+
 		/// <summary>
 		/// Logic for your function goes here.
 		/// </summary>
@@ -20,29 +40,11 @@ namespace nozctf_csharp
 			HttpResponse response = context.Response;
 			using TextReader reader = new StreamReader(request.Body);
 
-			// length check
+
 			string pattern = await reader.ReadLineAsync();
-			string sentence = "X CAN YOU SEE ANYTHING Q";
+			await response.WriteAsync(search(pattern));
 
-			if (pattern.Length > 10) {
-				Console.WriteLine("Error! too long");
-				return;
-			}
 
-			try {
-				foreach (Match match in Regex.Matches(sentence, pattern,
-					RegexOptions.None,
-					TimeSpan.FromSeconds(1))) {
-					await response.WriteAsync($"Find! {match.Value}");
-					return;
-				}
-				await response.WriteAsync("No Hit");
-			}
-			catch (RegexMatchTimeoutException) {
-				string secret = Environment.GetEnvironmentVariable("KEY_Q7") ?? "";
-
-				await response.WriteAsync($"TIMEOUT! 'FLAG_{secret}'");
-			}
 		}
 	}
 }

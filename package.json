@@ -1,10 +1,10 @@
 {
   "name": "nozctf-csharp",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "Function.cs",
   "repository": "git@github.com:elzup/nozctf-csharp.git",
   "license": "MIT",
   "scripts": {
-    "deploay": "gcloud functions deploy tryq7 --source . --trigger-http"
+    "deploy": "gcloud functions deploy tryq7 --entry-point nozctf_csharp.Function --runtime dotnet3 --trigger-http --allow-unauthenticated"
   }
 }
