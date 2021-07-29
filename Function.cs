@@ -27,6 +27,9 @@ namespace nozctf_csharp
 			catch (RegexMatchTimeoutException) {
 				return $"TIMEOUT! 'FLAG_{SECRET_PARTS}'";
 			}
+			catch (ArgumentException) {
+				return $"Invalid regex";
+			}
 		}
 
 		/// <summary>
